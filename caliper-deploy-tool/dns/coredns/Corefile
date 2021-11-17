@@ -1,0 +1,7 @@
+.:53 {
+    hosts /etc/coredns/hostsfile {
+        fallthrough
+    }
+    forward . 1.2.4.8:53
+    log
+}

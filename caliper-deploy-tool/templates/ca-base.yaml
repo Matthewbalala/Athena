@@ -1,0 +1,27 @@
+# version: '3'  
+# ca {name, org, version, network, port, mountpath}  
+# services:
+  {{name}}:
+      image: hyperledger/fabric-ca:{{ca.version}}
+      dns: {{ca.dnsserver}}
+      container_name: {{name}}
+      environment:
+      - GODEBUG=netdns=go
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME={{name}}
+      - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/{{name}}-cert.pem
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/key.pem
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-tls/tls{{name}}-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-tls/key.pem
+      ports:
+      - "{{ca.port}}:7054"
+      command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
+      volumes:
+      - {{ca.mountpath}}/crypto-config/peerOrganizations/{{'.'.join(name.split('.')[1:])}}/ca/:/etc/hyperledger/fabric-ca-server-config
+      - {{ca.mountpath}}/crypto-config/peerOrganizations/{{'.'.join(name.split('.')[1:])}}/tlsca/:/etc/hyperledger/fabric-ca-server-tls
+
+# networks:
+#     {{ca.network}}:
+#         external:
+#             name: {{ca.network}}

@@ -1,0 +1,90 @@
+common: &common
+  version: cdt
+  network: ansible_default
+  mountpath: /root/ansible/nfs
+  dnsserver: 10.10.7.51
+
+client:
+  cryptopath: benchmarks/config_raft
+  usecmd: false
+  orgs: # 数组
+    - org1
+    - org2
+    # - org3
+    # - org4
+fabric-network:
+  peer:
+    peer0.org1.example.com:  
+      <<: *common
+      host: 10.10.7.46
+      port: 7051
+    peer1.org1.example.com:  
+      <<: *common
+      host: 10.10.7.46
+      port: 7061
+    peer0.org2.example.com:  
+      <<: *common
+      host: 10.10.7.47
+      port: 7078
+    peer1.org2.example.com:  
+      <<: *common
+      host: 10.10.7.47
+      port: 7081
+    # peer0.org3.example.com:  
+    #   <<: *common
+    #   host: 10.10.7.54
+    #   port: 7051
+    # peer1.org3.example.com:  
+    #   <<: *common
+    #   host: 10.10.7.54
+    #   port: 7061
+    # peer0.org4.example.com:  
+    #   <<: *common
+    #   host: 10.10.7.58
+    #   port: 7078
+    # peer1.org4.example.com:  
+    #   <<: *common
+    #   host: 10.10.7.58
+    #   port: 7081
+  
+  
+  # 修改orderer端口要主要configtx.yaml中的端口配置
+  orderer:
+    orderer0.example.com:  
+      <<: *common
+      host: 10.10.7.52
+      port: 7050
+    orderer1.example.com:  
+      <<: *common
+      host: 10.10.7.52
+      port: 8050
+    orderer2.example.com:  
+      <<: *common
+      host: 10.10.7.52
+      port: 9050
+    # orderer3.example.com:  
+    #   <<: *common
+    #   host: 10.10.7.52
+    #   port: 8150
+    # orderer4.example.com:  
+    #   <<: *common
+    #   host: 10.10.7.52
+    #   port: 9150
+  ca:
+    ca.org1.example.com:  
+      <<: *common
+      host: 10.10.7.53
+      port: 7054
+    ca.org2.example.com:  
+      <<: *common
+      host: 10.10.7.53
+      port: 8054
+    # ca.org3.example.com:  
+    #   <<: *common
+    #   host: 10.10.7.53
+    #   port: 9054
+    # ca.org4.example.com:  
+    #   <<: *common
+    #   host: 10.10.7.53
+    #   port: 8154
+    

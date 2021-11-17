@@ -1,0 +1,111 @@
+# args:  
+# param1:   orgs=[ {"org":"org1", "anchorpeer": {"name": "peer0.org1.example.com", "port": 7051}]
+# param2:   orderes=[{"name":"ordere0.example.com", "port":7050}]
+# param3:   action
+
+---
+
+Organizations:
+- &OrdererOrg
+    Name: OrdererMSP
+    ID: OrdererMSP
+    MSPDir: crypto-config/ordererOrganizations/example.com/msp
+    AdminPrincipal: Role.MEMBER
+
+- &Org1
+    Name: Org1MSP
+    ID: Org1MSP
+    MSPDir: crypto-config/peerOrganizations/org1.example.com/msp
+    AdminPrincipal: Role.ADMIN
+    AnchorPeers:
+    - Host: peer0.org1.example.com
+      Port: 7051
+
+- &Org2
+    Name: Org2MSP
+    ID: Org2MSP
+    MSPDir: crypto-config/peerOrganizations/org2.example.com/msp
+    AdminPrincipal: Role.ADMIN
+    AnchorPeers:
+    - Host: peer0.org2.example.com
+      Port: 7078
+
+
+Orderer: &OrdererDefaults
+    OrdererType: etcdraft
+    Addresses:
+    
+    - orderer0.example.com:7050
+    
+    - orderer1.example.com:8050
+    
+    - orderer2.example.com:9050
+    
+
+    BatchTimeout: 500ms
+    BatchSize:
+        MaxMessageCount: 50
+        AbsoluteMaxBytes: 1048576
+        PreferredMaxBytes: 1048576
+
+    MaxChannels: 0
+    EtcdRaft:
+        Consenters:
+        
+        - Host: orderer0.example.com
+          Port: 7050
+          ClientTLSCert: crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls/server.crt
+          ServerTLSCert: crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls/server.crt
+        
+        - Host: orderer1.example.com
+          Port: 8050
+          ClientTLSCert: crypto-config/ordererOrganizations/example.com/orderers/orderer1.example.com/tls/server.crt
+          ServerTLSCert: crypto-config/ordererOrganizations/example.com/orderers/orderer1.example.com/tls/server.crt
+        
+        - Host: orderer2.example.com
+          Port: 9050
+          ClientTLSCert: crypto-config/ordererOrganizations/example.com/orderers/orderer2.example.com/tls/server.crt
+          ServerTLSCert: crypto-config/ordererOrganizations/example.com/orderers/orderer2.example.com/tls/server.crt
+        
+
+        Options:
+            # ElectionTick: 
+            # HeartbeatTick: 
+            # MaxInflightBlocks: 
+            # SnapshotIntervalSize: 
+            # TickInterval: 
+            ElectionTick: 10
+            HeartbeatTick: 1
+            MaxInflightBlocks: 5
+            SnapshotIntervalSize: 20 MB
+            TickInterval: 500ms
+
+    Organizations:
+
+Application: &ApplicationDefaults
+    Organizations:
+
+Profiles:
+    OrdererGenesis:
+        Orderer:
+            <<: *OrdererDefaults
+            Organizations:
+            - *OrdererOrg
+        Consortiums:
+            SampleConsortium:
+                Organizations:
+                
+                - *Org1
+                
+                - *Org2
+                
+    ChannelConfig:
+        Consortium: SampleConsortium
+        Application:
+            <<: *ApplicationDefaults
+            Organizations:
+            
+            - *Org1
+            
+            - *Org2
+            

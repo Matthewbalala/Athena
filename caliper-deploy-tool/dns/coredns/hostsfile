@@ -1,0 +1,9 @@
+10.10.7.46   peer0.org1.example.com
+10.10.7.46   peer1.org1.example.com
+10.10.7.47   peer0.org2.example.com
+10.10.7.47   peer1.org2.example.com
+10.10.7.52   orderer0.example.com
+10.10.7.52   orderer1.example.com
+10.10.7.52   orderer2.example.com
+10.10.7.52   ca.org1.example.com
+10.10.7.52   ca.org2.example.com

@@ -1,0 +1,27 @@
+---
+blockchain:
+  type: fabric
+  config: benchmarks/scenario/simple/fabric.json
+test:
+  workers:
+    type: local
+    number: 5
+  rounds:
+  - label: open
+    txNumber: 5000
+    rateControl:
+      type: fixed-feedback-rate
+      opts:
+        tps: 100
+        sleep_time: 1000
+        unfinished_per_client: 10
+    arguments:
+      money: 10000
+    callback: benchmarks/scenario/simple/open.js
+monitor:
+  type:
+  - docker
+  docker:
+    name:
+    - all
+  interval: 1

@@ -1,0 +1,21 @@
+---
+# 复制docker配置
+- hosts: caliper
+  remote_user: root
+  vars:
+    condarc: /root/.condarc
+  tasks:
+  - name: Copy conda config
+    copy: src={{condarc}} dest={{condarc}}
+          force=true
+
+  # - name: Copy docker config daemon
+  #   copy: src={{dockerdaemon}} dest={{dockerdaemon}}
+  #         force=true
+
+  # - name: daemon-reload and restart
+  #   shell: systemctl daemon-reload && systemctl start docker
+    # ignore_errors: True
+
+
+

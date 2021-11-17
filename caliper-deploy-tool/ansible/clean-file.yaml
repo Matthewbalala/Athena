@@ -1,0 +1,11 @@
+---
+- hosts: cdt
+  remote_user: root
+  tasks:
+  - name: rm -rf /root/ansible/images
+    shell: rm -rf /root/ansible/images
+    # ignore_errors: True
+
+  - name: docker stop all and rm all containers
+    shell: docker stop $(docker ps -aq) && docker rm $(docker ps -aq)
+    # ignore_errors: True

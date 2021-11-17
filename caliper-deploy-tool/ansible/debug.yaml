@@ -1,0 +1,4 @@
+---
+- hosts: caliper
+  tasks:
+    - debug: var=vars

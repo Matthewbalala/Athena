@@ -1,0 +1,138 @@
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+
+name: Fabric
+version: "1.0"
+mutual-tls: false
+
+caliper:
+  blockchain: fabric
+  {% if client.usecmd %}
+  command:
+    start: {{client.ansible.startcmd}}
+    end: {{client.ansible.endcmd}}
+  {% endif %}
+  command:
+    # start: export FABRIC_VERSION=1.4.4;export FABRIC_CA_VERSION=1.4.4;docker-compose -f networks/fabric/docker-compose/2org1peergoleveldb_raft/docker-compose-tls.yaml up -d;sleep 3s
+    end: wget 10.10.7.51:5000/cdt/reset -O 1.txt
+
+info:
+  Version: 2.0.0
+  Size: 1 Org N peers
+  Orderer: Raft
+  Distribution: Ditributed Host
+  StateDB: GoLevelDB
+
+clients:
+  {% for org in client.orgs %}
+  client{{org}}.{{org}}.example.com:
+    client:
+      organization: {{org.capitalize()}}
+      credentialStore:
+        path: /tmp/hfc-kvs/{{org}}
+        cryptoStore:
+          path: /tmp/hfc-cvs/{{org}}
+      clientPrivateKey:
+        path: {{client.cryptopath}}/crypto-config/peerOrganizations/{{org}}.example.com/users/User1@{{org}}.example.com/msp/keystore/key.pem
+      clientSignedCert:
+        path: {{client.cryptopath}}/crypto-config/peerOrganizations/{{org}}.example.com/users/User1@{{org}}.example.com/msp/signcerts/User1@{{org}}.example.com-cert.pem
+  {% endfor %}
+
+channels:
+  mychannel:
+    configBinary: {{client.cryptopath}}/mychannel.tx
+    # created: true
+    created: false
+    orderers:
+    {% for orderer in fabric.orderer%}
+    - {{orderer}}
+    {% endfor %}
+    peers:
+      {% for peer in fabric.peer %}
+      {{peer}}:
+        eventSource: true
+      {% endfor %}
+
+    chaincodes:
+
+    # # aigis-simple
+    # - id: simple
+    #   version: v0
+    #   language: golang
+    #   path: chaincode/simple/go
+
+    # aigis-smallbank
+    - id: smallbank
+      version: v0
+      language: golang
+      path: chaincode/smallbank/go
+
+    # # aigis-icc
+    # - id: company
+    #   version: v0
+    #   language: golang
+    #   path: chaincode/company/go
+
+organizations:
+  {% for org in client.orgs %}   
+  {{org.capitalize()}}:
+    mspid: {{org.capitalize()}}MSP
+    peers:
+    {% for peer in fabric.peer %}
+    {% if peer.find(org) != -1 %}
+    - {{peer}}
+    {%endif%}
+    {% endfor %}
+    certificateAuthorities:
+    - ca.{{org}}.example.com
+    adminPrivateKey:
+      path: {{client.cryptopath}}/crypto-config/peerOrganizations/{{org}}.example.com/users/Admin@{{org}}.example.com/msp/keystore/key.pem
+    signedCert:
+      path: {{client.cryptopath}}/crypto-config/peerOrganizations/{{org}}.example.com/users/Admin@{{org}}.example.com/msp/signcerts/Admin@{{org}}.example.com-cert.pem
+  {% endfor %}
+orderers:
+{% for orderer in fabric.orderer %}
+  {{orderer}}:
+    url: grpcs://{{orderer}}:{{fabric.orderer[orderer]['port']}}
+    grpcOptions:
+      ssl-target-name-override: {{orderer}}
+    tlsCACerts:
+        path: {{client.cryptopath}}/crypto-config/ordererOrganizations/example.com/orderers/{{orderer}}/msp/tlscacerts/tlsca.example.com-cert.pem
+{% endfor %}
+
+peers:
+
+  {% for peer in fabric.peer %}
+  {{peer}}:
+    url: grpcs://{{peer}}:{{fabric.peer[peer]['port']}}
+    grpcOptions:
+      ssl-target-name-override: {{peer}}
+      grpc.keepalive_time_ms: 600000
+    tlsCACerts:
+        path: {{client.cryptopath}}/crypto-config/peerOrganizations/{{'.'.join(peer.split('.')[1:])}}/peers/{{peer}}/msp/tlscacerts/tlsca.{{'.'.join(peer.split('.')[1:])}}-cert.pem
+  {% endfor%}
+  
+certificateAuthorities:
+  {% for ca in fabric.ca %}
+  {{ca}}:
+    url: https://{{ca}}:{{fabric.ca[ca]['port']}}
+    httpOptions:
+      verify: false
+    tlsCACerts:
+        path: {{client.cryptopath}}/crypto-config/peerOrganizations/{{'.'.join(ca.split('.')[1:])}}/tlsca/tlsca.{{'.'.join(ca.split('.')[1:])}}-cert.pem
+    registrar:
+    - enrollId: admin
+      enrollSecret: adminpw
+  {% endfor %}

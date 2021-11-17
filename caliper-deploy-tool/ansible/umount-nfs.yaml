@@ -1,0 +1,10 @@
+---
+- hosts: cdt
+  remote_user: root
+  vars:
+    dest_dir: /root/ansible/nfs
+  tasks:
+
+  - name: umount {{dest_dir}}
+    shell: umount {{dest_dir}}
+    ignore_errors: True

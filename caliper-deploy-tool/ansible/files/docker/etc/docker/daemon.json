@@ -1,0 +1,11 @@
+{
+          "registry-mirrors": [
+          "https://docker.mirrors.ustc.edu.cn",                   
+          "https://registry.docker-cn.com" 
+          ],
+          "insecure-registries" : [    
+          "registry.docker-cn.com",
+          "docker.mirrors.ustc.edu.cn"
+	  ],
+	  "hosts" : ["unix:///var/run/docker.sock", "tcp://0.0.0.0:2375"]
+} 

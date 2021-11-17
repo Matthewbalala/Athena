@@ -1,0 +1,27 @@
+---
+# 复制docker配置
+- hosts: cdt
+  remote_user: root
+  vars:
+    dockerconf: /etc/systemd/system/docker.service.d/override.conf
+    dockerdaemon: /etc/docker/daemon.json
+    localdir: docker
+  tasks:
+  - name: systemctl stop docker
+    shell: systemctl stop docker && mkdir -p /etc/systemd/system/docker.service.d
+    # ignore_errors: True
+
+  - name: Copy docker config systemd
+    copy: src={{localdir}}{{dockerconf}} dest={{dockerconf}}
+          force=true
+
+  - name: Copy docker config daemon
+    copy: src={{localdir}}{{dockerdaemon}} dest={{dockerdaemon}}
+          force=true
+
+  - name: daemon-reload and restart
+    shell: systemctl daemon-reload && systemctl start docker
+    # ignore_errors: True
+
+
+

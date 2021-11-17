@@ -1,0 +1,4 @@
+*.html
+dist/*
+*.log
+action.yaml
