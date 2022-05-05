@@ -12,7 +12,7 @@
 pip install -r requirements.txt
 ```
 ### RUN
-Start two terminals and execute the following commands respectively
+Start two terminals and execute the following commands respectively.
 ```shell
 # 1. 
 python main.py
@@ -20,3 +20,6 @@ python main.py
 cd maddpg/maddpg/experiments && python train.py
 ```
 
+### Q&A
+
+If you have any questions, you can contact limingxuan2@iie.ac.cn
