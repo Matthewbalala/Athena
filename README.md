@@ -1,18 +1,18 @@
 # Athena
 > This tool is an implementation in the paper "Auto-Tuning with Reinforcement Learning for Permissioned-Blockchain Systems".
 
-### 环境配置
+### Environment
 - caliper-deploy-tool
 ```shell
 # https://github.com/konoleoda/caliper-deploy-tool
-# 根据CDT的Readme进行安装，并进行Quick Start
+# Install according to CDT's Readme and perform Quick Start
 ```
 - Athena
 ```shell
 pip install -r requirements.txt
 ```
-### 运行
-分别启动两个终端执行
+### RUN
+Start two terminals and execute the following commands respectively
 ```shell
 # 1. 
 python main.py
