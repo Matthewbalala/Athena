@@ -24,7 +24,7 @@ cd maddpg/maddpg/experiments && python train.py
 
 If you have any questions, you can contact limingxuan2@iie.ac.cn
 
-### 参数列表
+### Parameter List
 
 | **Parameter Name**                                             | **Description**                                                                                                                | **Range**        | **Type** |
 |----------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------|------------------|----------|
