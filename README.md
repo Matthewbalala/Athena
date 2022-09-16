@@ -1,3 +1,5 @@
+We will update this part of the code before 5 pm US Pacific Time on September 17.
+
 # Athena
 > This tool is an implementation in the paper "Auto-Tuning with Reinforcement Learning for Permissioned-Blockchain Systems".
 
