@@ -1,0 +1,47 @@
+{
+    "name": "CHANNEL",
+    "version": "1.0.0",
+    "client": {
+        "organization": "Org1",
+        "connection": {
+            "timeout": {
+                "peer": {
+                    "endorser": "300"
+                },
+                "orderer": "300"
+            }
+        }
+    },
+    "channels": {
+        "fastfabric": {
+            "orderers": [
+                "address"
+            ],
+            "peers": {
+                "address": {}
+            }
+        }
+    },
+    "organizations": {
+        "Org1": {
+            "mspid": "Org1MSP",
+            "peers": [
+                "address"
+            ],
+            "signedCert": {
+                "path": "../crypto-config/peerOrganizations/DOMAIN/users/Admin@DOMAIN/msp/signcerts/Admin@DOMAIN-cert.pem"
+            }
+        }
+    },
+    "orderers": {
+        "address": {
+            "url": "grpc://ADDRESS:7050"
+        }
+    },
+    "peers": {
+        "address": {
+            "url": "grpc://ADDRESS:7051"
+        }
+    }
+}
+

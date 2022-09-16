@@ -1,0 +1,76 @@
+syntax = "proto3";
+
+import "protos/common/common.proto";
+import "protos/common/ledger.proto";
+
+package remote;
+
+service StoragePeer {
+    rpc GetBlockchainInfo(GetBlockchainInfoRequest) returns (common.BlockchainInfo) {}
+    rpc RetrieveBlockByHash (RetrieveBlockByHashRequest) returns (common.Block) {}
+    rpc RetrieveBlockByNumber (RetrieveBlockByNumberRequest) returns (common.Block) {}
+    rpc RetrieveTxByID (RetrieveTxByIDRequest) returns (common.Envelope) {}
+    rpc RetrieveTxByBlockNumTranNum (RetrieveTxByBlockNumTranNumRequest) returns (common.Envelope) {}
+    rpc RetrieveBlockByTxID (RetrieveBlockByTxIDRequest) returns (common.Block) {}
+    rpc RetrieveTxValidationCodeByTxID (RetrieveTxValidationCodeByTxIDRequest) returns (ValidationCode) {}
+    rpc RetrieveBlocks(RetrieveBlocksRequest) returns (Iterator){}
+    rpc IteratorNext(Iterator) returns (common.Block){}
+    rpc IteratorClose(Iterator) returns (Result){}
+}
+
+message StorageRequest {
+    string ledgerId = 1;
+    common.Block block = 2;
+
+}
+
+message Result {
+}
+
+message GetBlockchainInfoRequest {
+    string ledgerId = 1;
+}
+
+message RetrieveBlockByHashRequest {
+    string ledgerId = 1;
+    bytes blockHash = 2;
+}
+
+message RetrieveBlockByNumberRequest {
+    string ledgerId = 1;
+    uint64 blockNo = 2;
+}
+
+message RetrieveTxByIDRequest {
+    string ledgerId = 1;
+    string txID = 2;
+}
+
+message RetrieveTxByBlockNumTranNumRequest {
+    string ledgerId = 1;
+    uint64 blockNo = 2;
+    uint64 txNo = 3;
+}
+
+message RetrieveBlockByTxIDRequest {
+    string ledgerId = 1;
+    string txID = 2;
+}
+
+message RetrieveTxValidationCodeByTxIDRequest {
+    string ledgerId = 1;
+    string txID = 2;
+}
+
+message ValidationCode {
+    int32 validationCode = 1;
+}
+
+message RetrieveBlocksRequest{
+    string ledgerId = 1;
+    uint64 startNum = 2;
+}
+
+message Iterator{
+    int32 iteratorId = 1;
+}
