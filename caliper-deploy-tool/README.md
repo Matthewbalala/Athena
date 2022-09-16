@@ -1,12 +1,12 @@
 # Caliper-Deploy-Tool(CDT)
 
-> 一个基于Hyperledger Caliper v0.3.2的fabric网络部署和测试工具，具有以下特性：
+> 一个基于Hyperledger Caliper v0.5.0的fabric网络部署和测试工具，具有以下特性：
 >
 > - 部署简化，docker一键安装caliper
 > - 支持使用ansible多节点部署fabric 网络，包括docker镜像分发，docker daemon配置修改，启动和停止fabric网络，nfs共享，冗余文件清理
 > - 配置文件模板化，简化多节点配置文件生成过程
 >
-> - 当前支持fabric v1.4.4 raft共识算法
+> - 当前支持fabric v2.4.3 raft共识算法
 
 ### Runtime
 
@@ -88,7 +88,7 @@
       # 4. boot nfs server using docker 
       make setup-cdt
 
-      # download fabric docker image v1.4.4 and distribute them on host B、C、D [镜像分发]
+      # download fabric docker image v2.4.3 and distribute them on host B、C、D [镜像分发]
       make distribute-docker-images
      
       # setup fabric nodes host B、C、D
