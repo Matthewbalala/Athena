@@ -22,7 +22,9 @@ cd maddpg/maddpg/experiments && python train.py
 
 ### Note
 Parameters list and parameters rank in branch Athena-Fabric-v2.4.3.
+
 We have supported Fabric v1.4.x and Fabric v2.x.x , you can use it by switching branch. 
+
 v2.4.3 of FastFabric is in branch FastFabric.
 
 ### Q&A
