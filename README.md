@@ -1,6 +1,8 @@
 # Athena
 > This tool is an implementation in the paper "Auto-Tuning with Reinforcement Learning for Permissioned-Blockchain Systems".
 
+  We have supported Fabric1.4.x and Fabric 2.x.x version, you can use it by switching branch. v 2.4.3 of FastFabric is in branch FastFabric.
+
 ### Environment
 - caliper-deploy-tool
 ```shell
